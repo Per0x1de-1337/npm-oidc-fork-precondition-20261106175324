@@ -2,6 +2,7 @@ name: npm trusted-publisher fork precondition
 
 on:
   pull_request:
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -33,5 +34,5 @@ jobs:
           };
           console.log(JSON.stringify(safe));
           if (safe.aud !== 'npm:registry.npmjs.org') throw new Error('unexpected audience');
-          if (safe.event_name !== 'pull_request') throw new Error('unexpected event');
+          if (!['pull_request', 'workflow_dispatch'].includes(safe.event_name)) throw new Error('unexpected event');
           NODE
